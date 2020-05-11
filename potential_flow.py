@@ -159,7 +159,6 @@ def analytical(n_max, dx, val):
 def plots(psi, psi_anal, dx, val, plotv = [1, 1, 1]):
 
     size = int(1.0/dx)  # internal grid size = size - 2 (boundaries)
-
     # Figure 1
     # Numerical pixel plot and contours (stream lines)
     if plotv[0] == 1:
@@ -208,10 +207,11 @@ def plots(psi, psi_anal, dx, val, plotv = [1, 1, 1]):
     # Figure 2
     # Quiver plot
     if plotv[1] == 1:
+        nn = 5
         color = np.sqrt(np.square(vx) + np.square(vy))  # Colormap definition
         plt.figure(3)
         # plt.quiver(vx[1:-1, 1:-1], vy[1:-1, 1:-1], color, pivot = 'tip')
-        plt.quiver(vx, vy, color, pivot = 'tip')  # Quiver arrow plot
+        plt.quiver(vx[::nn, ::nn], vy[::nn, ::nn], color[::nn, ::nn], width = 0.007)  # Quiver arrow plot
         plt.xlabel('vx')
         plt.ylabel('vy')
         plt.title('Psi arrow velocity plot (m/s)')
@@ -345,11 +345,14 @@ def discrepancy(reductions):
     plt.show()
     return(dx_conv)
 
-# Function Calling
-num = numerical(1.0e-4, dx, val)
-an = analytical(100, dx, val)
 
-plots(num, an, dx, val)
-error_calc(num, an)
-analytical_conv(1.0e-4)
-discrepancy(6)
+if __name__ == "__main__":
+
+    # Function Calling
+    num = numerical(1.0e-4, dx, val)
+    an = analytical(100, dx, val)
+
+    plots(num, an, dx, val)
+    error_calc(num, an)
+    analytical_conv(1.0e-4)
+    discrepancy(6)
